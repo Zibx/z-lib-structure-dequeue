@@ -16,6 +16,7 @@ module.exports = (function () {
         prev: null
     };
     var dequeue = function () {
+
     };
 
     var Cursor = function (item, pos) {
@@ -28,13 +29,14 @@ module.exports = (function () {
     };
 
     dequeue.prototype = {
+        lastUsedItem: null,
         first: null,
         last: null,
         cursor: null,
         Item: Item,
         length: 0,
         push: function (item) {
-            item = new this.Item(item);
+            this.lastUsed = item = new this.Item(item);
             if (this.first === null) {
                 this.first = item;
             }
@@ -46,7 +48,7 @@ module.exports = (function () {
             return ++this.length;
         },
         unshift: function (item) {
-            item = new this.Item(item);
+            this.lastUsed = item = new this.Item(item);
             if (this.first !== null) {
                 this.first.prev = item;
                 item.next = this.first;
@@ -70,8 +72,10 @@ module.exports = (function () {
                     this.first = null;
                     this.cursor = null;
                 }
+                this.lastUsed = last;
                 return last.data;
             }
+            this.lastUsed = null;
             return void 0;
 
         },
@@ -87,14 +91,18 @@ module.exports = (function () {
                     this.first = null;
                 }
                 this.cursor && this.cursor.pos--;
+                this.lastUsed = first;
                 return first.data;
             }
+            this.lastUsed = null;
             return void 0;
         },
         get: function (index) {
             var pointer, min = this.length, tmp, i;
-            if (index < 0 || index >= min)
+            if (index < 0 || index >= min) {
+                this.lastUsed = null;
                 return;
+            }
             if ((tmp = Math.abs(0 - index)) < min) {
                 min = tmp;
                 pointer = this.first;
@@ -119,6 +127,7 @@ module.exports = (function () {
                     pointer = pointer.prev;
             }
             this.cursor = new Cursor(pointer, index);
+            this.lastUsed = pointer;
             return pointer.data;
             //console.log(pointer.data)
         },
@@ -149,7 +158,7 @@ module.exports = (function () {
             for (i = 1; i < count; i++) {
                 last = last.next;
             }
-            subSeq.last = last
+            subSeq.last = last;
             this.length -= count;
 
             if (sub) { // if insert
@@ -184,6 +193,7 @@ module.exports = (function () {
             //console.log(last, pointer.data, subSeq.toArray())
             //console.log(last, pointer.data, subSeq.toArray())
             this.cursor = null; // TODO logic to remove this dirty hack
+            this.lastUsed = subSeq;
             return subSeq.toArray();
         },
 
