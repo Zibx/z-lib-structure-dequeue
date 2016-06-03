@@ -224,7 +224,52 @@ module.exports = (function () {
                 cursor = cursor.next;
             }
             return out;
+        },
+        map: function (fn) {
+            var item = this.first,
+                out = [], i = 0;
+            while(item){
+                out.push(fn.call(item.data,item.data, i++));
+                item = item.next;
+            }
+            return out;
+        },
+        filter: function (fn) {
+            var item = this.first,
+                out = [], i = 0, res;
+            while(item){
+                res = fn.call(item.data, item.data, i++);
+                res && out.push(item.data);
+                item = item.next;
+            }
+            return out;
+        },
+        reduce: function (fn, first) {
+            var item = this.first, i = 0, lastVal;
+            if(!item)
+                return;
+
+            if(first)
+                lastVal = first;
+            else {
+                lastVal = item.data;
+                item = item.next;
+            }
+
+            while(item){
+                lastVal = fn.call(item.data, lastVal, item.data, i++);
+                item = item.next;
+            }
+            return lastVal;
+        },
+        each: function (fn) {
+            var item = this.first, i = 0;
+            while(item){
+                fn.call(item.data,item.data, i++);
+                item = item.next;
+            }
         }
     };
+    dequeue.prototype.forEach = dequeue.prototype.each;
     return dequeue;
 })();

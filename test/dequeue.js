@@ -56,4 +56,35 @@ describe('dequeue', function() {
 
         assert.equal(d.pop(), void 0);
     });
+    it('map', function () {
+        var d = new dq();
+        for(var i = 0; i < 5; i++)
+            d.push(i);
+        assert.deepEqual(d.map(function(el){return el*2}), [0,2,4,6,8]);
+    });
+    it('filter', function () {
+        var d = new dq();
+        for(var i = 0; i < 10; i++)
+            d.push(i);
+        assert.deepEqual(d.filter(function(el){return el%2===0}), [0,2,4,6,8]);
+    });
+    it('reduce', function () {
+        var d = new dq(), arr = [];
+        for(var i = 0; i < 10; i++) {
+            d.push(i);
+            arr.push(i)
+        }
+        var sum = function(a,b){return a+b};
+        assert.deepEqual(d.reduce(sum), arr.reduce(sum));
+    });
+    it('each', function () {
+        var d = new dq(), collector = [];
+        for(var i = 0; i < 5; i++)
+            d.push(i);
+        assert.deepEqual(d.each(function(el,i){
+            collector.push([el*2,i]);
+        }), void 0);
+        console.log(JSON.stringify(collector));
+        assert.deepEqual(collector, [[0,0],[2,1],[4,2],[6,3],[8,4]]);
+    });
 });
