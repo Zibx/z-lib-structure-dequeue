@@ -188,7 +188,7 @@ module.exports = (function () {
                 if (last.next)
                     last.next.prev = pointer.prev;
                 else
-                    this.last = last
+                    this.last = last.prev;
             }
             //console.log(last, pointer.data, subSeq.toArray())
             //console.log(last, pointer.data, subSeq.toArray())
