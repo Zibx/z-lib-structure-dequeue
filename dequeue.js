@@ -134,7 +134,9 @@ module.exports = (function () {
 
         splice: function (pos, count) {
             if (pos < 0) pos = this.length + pos;
-            count = Math.min(count, this.length - pos);
+            if(pos < this.length)
+                count = Math.min(count, this.length - pos);
+
             var items,
                 subSeq = new dequeue(), i, _i, pointer, last,
                 sub;
@@ -150,10 +152,21 @@ module.exports = (function () {
 
             }
             this.get(pos);// move cursor
-            if(!this.cursor){ // no elements
-                this.first = subSeq.first;
-                this.last = subSeq.last;
-                this.length = subSeq.length;
+            if(this.cursor === null){ // no elements
+                if(pos>=this.length){
+                    if(this.first){
+                        this.last.next = subSeq.first;
+                        this.last = subSeq.last
+                    }else{
+                        this.first = subSeq.first;
+                        this.last = subSeq.last
+                    }
+
+
+                    this.length += subSeq.length;
+                }
+
+
                 return [];
             }
             pointer = this.cursor.item;
@@ -176,7 +189,7 @@ module.exports = (function () {
                 } else
                     this.first = sub.first;
 
-                if (last.next) {
+                if (last) {
                     last.prev = sub.last;
                     sub.last.next = last;
                 } else
