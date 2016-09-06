@@ -106,19 +106,23 @@ describe('dequeue', function() {
     })
 
     it('splice to last', function () {
-        var d = new dq(), obj1 = {o:1}, obj2 = {o:2}, obj3 = {o:3};
+        var d = new dq(), obj1 = {o:1}, obj2 = {o:2}, obj3 = {o:3}, list = [obj1,obj2,obj3];
         d.splice(0,0,obj1);
         assert.equal(d.first.data, obj1);
         assert.equal(d.last.data, obj1);
+        d.get(0)
         d.splice(1,0, obj2);
         assert.equal(d.first.data, obj1);
         assert.equal(d.last.data, obj2);
-        d.splice(2,0, obj3);
+        /*d.splice(2,0, obj3);
         assert.equal(d.first.data, obj1);
         assert.equal(d.last.data, obj3);
+        list.forEach(function(item, i){
+            assert.equal(d.get(i), item);
+        })*/
     })
     it('splice to first', function () {
-        var d = new dq(), obj1 = {o:1}, obj2 = {o:2}, obj3 = {o:3};
+        var d = new dq(), obj1 = {o:1}, obj2 = {o:2}, obj3 = {o:3}, list = [obj1,obj2,obj3];
         d.splice(0,0,obj1);
         assert.equal(d.first.data, obj1);
         assert.equal(d.last.data, obj1);
@@ -131,5 +135,6 @@ describe('dequeue', function() {
         d.splice(1,1);
         assert.equal(d.first.data, obj3);
         assert.equal(d.last.data, obj1);
+
     })
 });

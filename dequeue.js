@@ -100,7 +100,7 @@ module.exports = (function () {
         get: function (index) {
             var pointer, min = this.length, tmp, i;
             if (index < 0 || index >= min) {
-                this.lastUsed = null;
+                this.cursor = this.lastUsed = null;
                 return;
             }
             if ((tmp = Math.abs(0 - index)) < min) {
@@ -166,7 +166,7 @@ module.exports = (function () {
                     this.length += subSeq.length;
                 }
 
-
+                this.cursor = null;
                 return [];
             }
             pointer = this.cursor.item;
