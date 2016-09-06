@@ -156,6 +156,7 @@ module.exports = (function () {
                 if(pos>=this.length){
                     if(this.first){
                         this.last.next = subSeq.first;
+                        subSeq.first.prev = this.last;
                         this.last = subSeq.last
                     }else{
                         this.first = subSeq.first;
