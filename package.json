@@ -1,6 +1,6 @@
 {
   "name": "z-lib-structure-dequeue",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "dequeue",
   "main": "dequeue.js",
   "scripts": {

@@ -87,4 +87,39 @@ describe('dequeue', function() {
         console.log(JSON.stringify(collector));
         assert.deepEqual(collector, [[0,0],[2,1],[4,2],[6,3],[8,4]]);
     });
+    it('simple splice', function () {
+        var d = new dq(), obj1 = {o:1}, obj2 = {o:2};
+        d.push(obj1);
+        assert.equal(d.first.data, obj1);
+        assert.equal(d.last.data, obj1);
+        d.splice(0,1);
+        assert.equal(d.first, null);
+        assert.equal(d.last, null);
+        d.push(obj1);
+        d.push(obj2);
+        assert.equal(d.first.data, obj1);
+        assert.equal(d.last.data, obj2);
+        d.splice(0,1);
+        d.splice(0,1);
+        assert.equal(d.first, null);
+        assert.equal(d.last, null);
+    })
+
+    it('simple first', function () {
+        var d = new dq(), obj1 = {o:1}, obj2 = {o:2};
+        d.splice(0,0,obj1);
+        assert.equal(d.first.data, obj1);
+        assert.equal(d.last.data, obj1);
+        d.splice(0,1);
+        assert.equal(d.first, null);
+        assert.equal(d.last, null);
+        d.push(obj1);
+        d.push(obj2);
+        assert.equal(d.first.data, obj1);
+        assert.equal(d.last.data, obj2);
+        d.splice(0,1);
+        d.splice(0,1);
+        assert.equal(d.first, null);
+        assert.equal(d.last, null);
+    })
 });

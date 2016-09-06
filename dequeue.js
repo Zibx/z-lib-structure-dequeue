@@ -150,6 +150,12 @@ module.exports = (function () {
 
             }
             this.get(pos);// move cursor
+            if(!this.cursor){ // no elements
+                this.first = subSeq.first;
+                this.last = subSeq.last;
+                this.length = subSeq.length;
+                return [];
+            }
             pointer = this.cursor.item;
 
             subSeq.length = count;
