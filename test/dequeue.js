@@ -144,4 +144,69 @@ describe('dequeue', function() {
         assert.equal(d.last.data, obj1);
 
     })
+    it('slice no parametres', function () {
+        var d = new dq(),
+            _i = 100,
+            begin = 0,
+            end = 100;
+        for(var i = 0; i < _i; ++i) {
+            d.push({data: i*2});
+        }
+        var _d = d.slice();
+        assert.equal(_d.length,end);
+        for(var i = begin; i < end; ++i)
+            assert.deepEqual(_d.get(i),{data: i*2});
+    })
+    it('slice only begin', function () {
+        var d = new dq(),
+            _i = 100,
+            begin = 20,
+            end = 100;
+        for(var i = 0; i < _i; ++i) {
+            d.push({data: i*2});
+        }
+        var _d = d.slice(begin);
+        assert.equal(_d.length,end-begin);
+        for(var ri = 0, i = begin; i < end; ++i, ++ri)
+            assert.deepEqual(_d.get(ri),{data: i*2});
+    })
+    it('slice with begin and end', function () {
+        var d = new dq(),
+            _i = 100,
+            begin = 20,
+            end = 41;
+        for(var i = 0; i < _i; ++i) {
+            d.push({data: i*2});
+        }
+        var _d = d.slice(begin,end);
+        assert.equal(_d.length,end-begin);
+        for(var ri = 0, i = begin; i < end; ++i, ++ri)
+            assert.deepEqual(_d.get(ri),{data: i*2});
+    })
+    it('slice with negative begin', function () {
+        var d = new dq(),
+            _i = 100,
+            begin = -20,
+            end = 100;
+        for(var i = 0; i < _i; ++i) {
+            d.push({data: i*2});
+        }
+        var _d = d.slice(begin,end);
+        assert.equal(_d.length,-begin);
+        for(var ri = 0, i = end+begin; i < end; ++i, ++ri)
+            assert.deepEqual(_d.get(ri),{data: i*2});
+    })
+    it('slice with negative end', function () {
+        var d = new dq(),
+            _i = 100,
+            begin = 20,
+            end = -20;
+        for(var i = 0; i < _i; ++i) {
+            d.push({data: i*2});
+        }
+        var _d = d.slice(begin,end);
+        assert.equal(_d.length,_i+end-begin);
+        for(var ri = 0, i = end+begin; i < end; ++i, ++ri)
+            assert.deepEqual(_d.get(ri),{data: i*2});
+    })
 });

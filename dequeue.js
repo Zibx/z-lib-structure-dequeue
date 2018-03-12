@@ -217,8 +217,30 @@ module.exports = (function () {
             return subSeq.toArray();
         },
 
-        slice: function () {
+        slice: function (begin, end) {
+            if(!begin) begin = 0;
+            var bg = begin;
+            for ( ; begin < 0; ) {
+                begin = this.length + begin;
+            }
+            if (end && end < 0) end = this.length + end;
+            end = !end ? this.length : end > this.length ? this.length: end;
 
+            var items,
+                subSeq = new dequeue(), pointer;
+
+            if(begin >= end) {
+                return subSeq;
+            } else {
+                pointer = this.get(begin);
+                for( ;begin < end; ++begin) {
+                    pointer = this.get(begin);
+                    subSeq.push(pointer);
+                }
+            }
+            subSeq.cursor = null; // TODO logic to remove this dirty hack
+            subSeq.lastUsed = subSeq.last;
+            return subSeq;
         },
 
         indexOf: function (item) {
